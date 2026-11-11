@@ -1,0 +1,20 @@
+# Railway deploys via Dockerfile (PHP-FPM + nginx + supervisor + queue worker).
+# Konfigurasi runtime (DB_*, APP_*, SUPABASE_*, CHATBOT_*) diset lewat Railway env.
+
+[build]
+  builder = "dockerfile"
+  dockerfilePath = "Dockerfile"
+
+[deploy]
+  startCommand = "supervisord -c /etc/supervisord.conf"
+  healthcheckPath = "/healthz"
+  healthcheckTimeout = 30
+  restartPolicyType = "on_failure"
+  restartPolicyMaxRetries = 3
+
+[vars]
+  APP_ENV = "production"
+  APP_DEBUG = "false"
+  LOG_CHANNEL = "stderr"
+  DB_CONNECTION = "pgsql"
+  CHATBOT_LOG_TRANSCRIPTS = "true"
